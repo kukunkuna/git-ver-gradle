@@ -1,6 +1,7 @@
 plugins {
     id 'groovy'
     id 'java'
+    id "org.ajoberstar.grgit" version "4.1.0"
 }
 
 group 'org.example'
@@ -15,4 +16,22 @@ repositories {
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.3.11'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+version = "1.0.1"
+
+task tagRelease {
+    description = 'Tags the current head with the project\'s version.'
+    doLast {
+        grgit.tag.add {
+            name = version
+            message = "Release of ${version}"
+        }
+    }
+}
+
+task pushToOrigin {
+    description = 'Pushes current branch\'s committed changes to origin repo.'
+    doLast {
+        grgit.push()
+    }
 }
